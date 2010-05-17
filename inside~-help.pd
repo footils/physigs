@@ -1,0 +1,34 @@
+#N canvas 348 22 468 363 10;
+#X obj 71 174 sig~;
+#X obj 71 294 snapshot~;
+#X obj 121 234 loadbang;
+#X floatatom 71 324 9 0 0 0 - - -;
+#X floatatom 71 145 5 0 0 0 - - -;
+#X msg 19 105 -1.51;
+#X msg 73 105 -1.5;
+#X msg 155 105 1.5;
+#X msg 197 104 1.51;
+#X obj 121 264 metro 100;
+#X msg 329 68 version 0.1.0;
+#X msg 117 105 0;
+#X obj 71 204 inside~ -1.5 1.5;
+#X text 13 17 takes 2 arguments to specify the range and outputs 0
+or 1 if the incoming signal is within the range \, excluding the borders.
+;
+#X text 78 83 0;
+#X text 32 83 0;
+#X text 122 83 1;
+#X text 160 83 0;
+#X text 198 83 0;
+#X text 230 83 <- expected;
+#X connect 0 0 12 0;
+#X connect 1 0 3 0;
+#X connect 2 0 9 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;
+#X connect 9 0 1 0;
+#X connect 11 0 4 0;
+#X connect 12 0 1 0;

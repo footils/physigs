@@ -1,0 +1,219 @@
+#N canvas 177 12 1052 645 10;
+#X obj 524 37 r \$0-massbang;
+#X obj 603 62 r \$0-linkbang;
+#X obj 682 88 r \$0-control;
+#X msg 690 120 help;
+#X text 516 326 ybounds <ymin> <ymax>;
+#X text 516 308 xbounds <xmin> <xmax>;
+#X text 516 362 bounce 0/1: turne edge bouncing on or off;
+#X text 516 380 drag: set global viscous drag multiplier. 0 is sticky
+\, 1 is no drag at all. Default is 0.99;
+#X text 517 426 add-link <m1> <m2> <k> <D>: add a link between mass
+m1 and mass m2 with rigidity k and damping D;
+#X text 517 457 reset: reset masses and links;
+#X text 517 475 reset-masses: reset only masses;
+#X text 517 493 reset-links: reset only links;
+#X text 494 293 Control messages to last inlet;
+#X text 44 15 physigs - physically inspired particle simulation in
+the signal realm;
+#X text 44 140 The mass bang advances the particle system one step
+and clears all forces afterwards. It requires the time of one audio
+block with the size of <max number of masses> samples.;
+#N canvas 177 81 1078 319 particle-system-state 0;
+#X obj 62 117 table \$0-mass 64;
+#X obj 62 41 table \$0-pos-x 64;
+#X obj 62 63 table \$0-vel-x 64;
+#X obj 62 85 table \$0-force-x 64;
+#X obj 207 41 table \$0-pos-y 64;
+#X obj 207 63 table \$0-vel-y 64;
+#X obj 207 85 table \$0-force-y 64;
+#X text 67 17 Mass tables;
+#X text 504 20 Link tables;
+#X obj 504 39 table \$0-link-m1 64;
+#X obj 504 61 table \$0-link-m2 64;
+#X obj 504 83 table \$0-link-k 64;
+#X obj 504 105 table \$0-link-D 64;
+#X obj 503 128 table \$0-link-force-x 64;
+#X obj 503 147 table \$0-link-force-y 64;
+#X text 663 37 index of connected mass 1;
+#X text 664 60 index of connected mass 2;
+#X obj 62 138 table \$0-mobile 64;
+#X text 341 41 position;
+#X text 339 62 velocity;
+#X text 183 117 mass;
+#X text 190 139 mobile = 1 \, immobile = 0;
+#X text 664 85 k of link;
+#X text 663 104 D of link (velocity dependent damping in link direction)
+;
+#X text 699 128 link forces;
+#X text 354 85 force accumulators;
+#X obj 503 171 table \$0-link-length 64;
+#X text 696 171 link lengths;
+#X restore 42 253 pd particle-system-state;
+#X text 40 289 You can directly read and modify all of these tables
+by using the correct prefix. Note that first element (index 0) of all
+mass-tables must not be connected to any link and has to be immobile.
+;
+#X obj 99 469 s \$0-name-link-k;
+#X text 41 358 For example to set the k of all links in the example
+[physigs] object with prefix "\$0-name" on the right at the same time
+\, use something like:;
+#X msg 99 448 const \$1;
+#X obj 102 411 hsl 128 15 0 10 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 99 430 5 0 0 0 - - -;
+#X obj 820 42 metro 50;
+#X obj 820 23 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 820 63 f;
+#X obj 857 66 ==;
+#X obj 820 84 select 0 1;
+#X obj 848 109 s \$0-linkbang;
+#X obj 820 131 s \$0-massbang;
+#X text 843 22 how to drive [physigs];
+#X msg 906 37 \; pd dsp 1;
+#X text 517 542 table: send message to internal table;
+#X obj 103 553 hsl 128 15 0 10 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 100 572 5 0 0 0 - - -;
+#X msg 100 590 table link-k const \$1;
+#X obj 100 611 s \$0-control;
+#X text 43 492 Alternatively you can use a "table" control message
+to the last inlet. Use the table's base name without prefix as first
+argument to a "table" command \, then add whatever message you need
+to send. To set all links like above use this:;
+#N canvas 0 0 1173 493 scanned-synthesis-string 0;
+#X msg 56 82 reset \, table mobile const 1 \, table mobile 0 0 0 \,
+table mobile 62 0 0 \, table pos-x 1 -499 \, table pos-x 62 499 \,
+reset-links \, add-link 2 1 1 0 \, add-link 3 2 1 0 \, add-link 4 3
+1 0 \, add-link 5 4 1 0 \, add-link 6 5 1 0 \, add-link 7 6 1 0 \,
+add-link 8 7 1 0 \, add-link 9 8 1 0 \, add-link 10 9 1 0 \, add-link
+11 10 1 0 \, add-link 12 11 1 0 \, add-link 13 12 1 0 \, add-link 14
+13 1 0 \, add-link 15 14 1 0 \, add-link 16 15 1 0 \, add-link 17 16
+1 0 \, add-link 18 17 1 0 \, add-link 19 18 1 0 \, add-link 20 19 1
+0 \, add-link 21 20 1 0 \, add-link 22 21 1 0 \, add-link 23 22 1 0
+\, add-link 24 23 1 0 \, add-link 25 24 1 0 \, add-link 26 25 1 0 \,
+add-link 27 26 1 0 \, add-link 28 27 1 0 \, add-link 29 28 1 0 \, add-link
+30 29 1 0 \, add-link 31 30 1 0 \, add-link 32 31 1 0 \, add-link 33
+32 1 0 \, add-link 34 33 1 0 \, add-link 35 34 1 0 \, add-link 36 35
+1 0 \, add-link 37 36 1 0 \, add-link 38 37 1 0 \, add-link 39 38 1
+0 \, add-link 40 39 1 0 \, add-link 41 40 1 0 \, add-link 42 41 1 0
+\, add-link 43 42 1 0 \, add-link 44 43 1 0 \, add-link 45 44 1 0 \,
+add-link 46 45 1 0 \, add-link 47 46 1 0 \, add-link 48 47 1 0 \, add-link
+49 48 1 0 \, add-link 50 49 1 0 \, add-link 51 50 1 0 \, add-link 52
+51 1 0 \, add-link 53 52 1 0 \, add-link 54 53 1 0 \, add-link 55 54
+1 0 \, add-link 56 55 1 0 \, add-link 57 56 1 0 \, add-link 58 57 1
+0 \, add-link 59 58 1 0 \, add-link 60 59 1 0 \, add-link 61 60 1 0
+\, add-link 62 61 1 0 \, add-link 63 62 1 0 \, add-link 64 63 1 0 \,
+table link-D const 3 \,;
+#X obj 56 413 s \$0-control;
+#X text 483 67 example for a string of 64 masses.;
+#X obj 515 155 hsl 128 15 -400 400 0 0 empty empty empty -2 -8 0 10
+-262144 -1 -1 6600 1;
+#X floatatom 512 175 5 0 0 0 - - -;
+#X obj 512 212 s \$0-control;
+#X obj 740 214 +~ 1;
+#X floatatom 741 130 5 0 0 0 - - -;
+#X obj 916 180 phasor~;
+#X obj 916 204 *~ 62;
+#X obj 915 225 +~ 1;
+#X floatatom 916 163 5 0 0 0 - - -;
+#X obj 739 287 /~ 700;
+#X obj 916 280 /~ 700;
+#X obj 916 141 * 1.5;
+#X obj 739 330 *~ 0;
+#X obj 740 366 dac~;
+#X obj 777 331 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 741 169 phasor~;
+#X obj 739 260 tabread4~ \$0-name-pos-y;
+#X obj 915 257 tabread4~ \$0-name-pos-y;
+#X msg 741 107 100;
+#X obj 741 88 loadbang;
+#X text 510 129 change pos-y of mass 32;
+#X text 739 63 Scanned Synthesis on String;
+#X obj 741 193 *~ 62;
+#X obj 514 252 hsl 128 15 0 10 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 511 272 5 0 0 0 - - -;
+#X msg 511 288 table link-k const \$1;
+#X obj 511 309 s \$0-control;
+#X obj 513 343 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 510 363 5 0 0 0 - - -;
+#X obj 510 400 s \$0-control;
+#X msg 510 379 drag \$1;
+#X text 70 59 Connect 62 masses by links \, the endpoints are immobile
+;
+#X msg 512 191 table pos-x 32 \$1;
+#X connect 0 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 35 0;
+#X connect 6 0 19 0;
+#X connect 7 0 14 0;
+#X connect 7 0 18 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 10 0 20 0;
+#X connect 11 0 8 0;
+#X connect 12 0 15 0;
+#X connect 13 0 15 0;
+#X connect 14 0 11 0;
+#X connect 15 0 16 0;
+#X connect 15 0 16 1;
+#X connect 17 0 15 1;
+#X connect 18 0 25 0;
+#X connect 19 0 12 0;
+#X connect 20 0 13 0;
+#X connect 21 0 7 0;
+#X connect 22 0 21 0;
+#X connect 25 0 6 0;
+#X connect 26 0 27 0;
+#X connect 27 0 28 0;
+#X connect 28 0 29 0;
+#X connect 30 0 31 0;
+#X connect 31 0 33 0;
+#X connect 33 0 32 0;
+#X connect 35 0 5 0;
+#X restore 541 597 pd scanned-synthesis-string;
+#X text 541 578 Here's an example system:;
+#X text 44 46 Once you've set up the particle system \, you should
+alternatingly bang the link- and mass-bang inlets. The link bang calculates
+all forces generated by links and accumulates them into the respective
+slots of the mass particles. It requires the time of one audio block
+with the size of <max number of links> samples.;
+#X text 492 162 Arguments: <name> <number of masses> <max number of
+links>;
+#X text 525 201 The link and mass numbers must be powers of two \,
+like 2 \, 4 \, 8 \, 16 \, 32 \, 64 \, 128 \, 256 \, 512 \, 1024 \,
+...;
+#X text 525 232 All masses will be active \, but the actual number
+of usable masses is one less than specified by the first argument because
+the mass at index 0 must not connected with any link (consider it a
+"guard mass").;
+#X text 42 195 The actual calculations are made on tables \, that are
+prefixed by the first argument passed to [physigs]. The tables in the
+following subpatch are available (replace the \$0 with the name you
+passed):;
+#X text 517 511 auto-link-length: will set the lengths of all links
+to their current extrusion;
+#X obj 524 120 physigs3 \$0-name 64 128;
+#X text 516 344 zbounds <xmin> <xmax>;
+#X connect 0 0 45 0;
+#X connect 1 0 45 1;
+#X connect 2 0 45 2;
+#X connect 3 0 45 2;
+#X connect 19 0 17 0;
+#X connect 20 0 21 0;
+#X connect 21 0 19 0;
+#X connect 22 0 24 0;
+#X connect 23 0 22 0;
+#X connect 23 0 30 0;
+#X connect 24 0 25 0;
+#X connect 24 0 26 0;
+#X connect 25 0 24 1;
+#X connect 26 0 28 0;
+#X connect 26 1 27 0;
+#X connect 32 0 33 0;
+#X connect 33 0 34 0;
+#X connect 34 0 35 0;
